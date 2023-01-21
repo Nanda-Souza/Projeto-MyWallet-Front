@@ -1,10 +1,43 @@
 import styled from "styled-components";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ThreeDots } from "react-loader-spinner";
 
 
 export default function ScreenRegister(){
+    const [loading, setLoading] = useState(false)
+    const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [passConf, setPassConf] = useState("")
+    const navigate = useNavigate()
+
+function sendRegister(e){
+    e.preventDefault()
+
+    const loginData = {name, email, password, confirmPassword: passConf}
+    setLoading(true)
+    console.log(loginData)
+
+    const url_post = "http://localhost:5001/sign-up"
+    const promise = axios.post(url_post, loginData)
+
+    promise.then( res => {
+        console.log(res)
+        setLoading(false)
+        navigate("/")
+    })
+    promise.catch ( err => {
+        console.log(err.response)
+        setLoading(false)
+    })
+
+}
 
     return (
 
+<form onSubmit={sendRegister}>
     <InputRegister>
 
         <InputList>
@@ -12,26 +45,42 @@ export default function ScreenRegister(){
             <input
                  data-test="name"
                  type="name"
-                 placeholder="Nome"               
+                 value={name}
+                 onChange={e => setName(e.target.value)}
+                 placeholder="Nome"
+                 required
+                 disabled={loading}
                 />
 
             <input
                  data-test="email"
                  type="email"
-                 placeholder="E-mail"               
+                 value={email}
+                 onChange={e => setEmail(e.target.value)}
+                 placeholder="E-mail"
+                 required
+                 disabled={loading}
                 />
 
 
             <input
                  data-test="password"
                  type="password" 
+                 value={password}
+                 onChange={e => setPassword(e.target.value)}
                  placeholder="Senha"
+                 required
+                 disabled={loading}
                 />
 
             <input
                  data-test="conf-password"
-                 type="conf"
+                 type="password"
+                 value={passConf}
+                 onChange={e => setPassConf(e.target.value)}
                  placeholder="Confirme a senha"               
+                 required
+                 disabled={loading}
                 />    
 
 
@@ -47,6 +96,7 @@ export default function ScreenRegister(){
         </InputList>
 
     </InputRegister>
+</form>
     )
 }
 
