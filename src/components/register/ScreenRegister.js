@@ -13,25 +13,31 @@ export default function ScreenRegister(){
     const [passConf, setPassConf] = useState("")
     const navigate = useNavigate()
 
-function sendRegister(e){
+const sendRegister = async (e) => {
     e.preventDefault()
 
     const loginData = {name, email, password, confirmPassword: passConf}
     setLoading(true)
-    console.log(loginData)
 
-    const url_post = "http://localhost:5001/sign-up"
-    const promise = axios.post(url_post, loginData)
+    try{    
 
-    promise.then( res => {
-        console.log(res)
+    await axios.post("http://localhost:5001/sign-up", loginData)
+    } catch (err){
+        if (err.response.status === 422){
+            alert("Senha e confirmação de senha devem ser iguais!")
+        } else if (err.response.status === 409){
+            alert("Usuário ou email já cadastrados!")
+        } else {
+            alert("Não foi possível fazer o cadastro, favor tentar novamente mais tarde!")
+        }        
         setLoading(false)
-        navigate("/")
-    })
-    promise.catch ( err => {
-        console.log(err.response)
-        setLoading(false)
-    })
+        return;
+    }    
+    
+    setLoading(false)
+    navigate("/")
+    
+    
 
 }
 
@@ -84,11 +90,19 @@ function sendRegister(e){
                 />    
 
 
-            <Registration >
+            <Registration isLoading={loading} >
+                {loading ? (
+                    <ThreeDots 
+                        height="40"
+                        width="40"
+                        color="#ffffff"
+                    />
+                ):(
                     <p
                     data-test="sign-up-submit"
                     id="button" 
                     className="button-log">Cadastrar</p>
+                )}
             
             </Registration>
 
