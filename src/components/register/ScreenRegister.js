@@ -22,10 +22,11 @@ const sendRegister = async (e) => {
     try{    
 
     await axios.post("http://localhost:5001/sign-up", loginData)
+    
     } catch (err){
-        if (err.response.status === 422){
+        if (err.response?.status === 422){
             alert("Senha e confirmação de senha devem ser iguais!")
-        } else if (err.response.status === 409){
+        } else if (err.response?.status === 409){
             alert("Usuário ou email já cadastrados!")
         } else {
             alert("Não foi possível fazer o cadastro, favor tentar novamente mais tarde!")
@@ -36,6 +37,7 @@ const sendRegister = async (e) => {
     
     setLoading(false)
     navigate("/")
+    
     
     
 

@@ -1,31 +1,81 @@
 import styled from "styled-components";
-
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function ScreenLogin(){
+    const [loading, setLoading] = useState(false)    
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")    
+    const navigate = useNavigate()
+
+const sendLogin = async (e) => {
+        e.preventDefault()
+    
+        const loginData = {email, password}
+        setLoading(true)
+    
+        try{    
+    
+        const logingPost = await axios.post("http://localhost:5001/sign-in", loginData)
+        console.log(logingPost)
+        } catch (err){
+            if (err.response?.status === 400){
+                alert("Email ou senha incorretos!")
+            } else {
+                alert("Não foi possível fazer o cadastro, favor tentar novamente mais tarde!")
+            }        
+            setLoading(false)
+            return;
+        }    
+        setLoading(false)        
+        navigate("/")
+        
+        
+    
+    }
 
     return (
 
+<form onSubmit={sendLogin}>
     <InputLogin>
 
         <InputLista>
             <input
                  data-test="email"
                  type="email"
-                 placeholder="E-mail"               
+                 value={email}
+                 onChange={e => setEmail(e.target.value)}
+                 placeholder="E-mail"
+                 required
+                 disabled={loading}
                 />
 
             <input
                  data-test="password"
                  type="password" 
+                 value={password}
+                 onChange={e => setPassword(e.target.value)}
                  placeholder="Senha"
+                 required
+                 disabled={loading}
                 />
 
 
-            <LogIn >
+            <LogIn isLoading={loading} >
+            {loading ? (
+                    <ThreeDots 
+                        height="40"
+                        width="40"
+                        color="#ffffff"
+                    />
+                ):(
                     <p
                     data-test="sign-in-submit"
                     id="button" 
                     className="button-log">Entrar</p>
+                )}
             
             </LogIn>
 
@@ -33,6 +83,7 @@ export default function ScreenLogin(){
         </InputLista>
 
     </InputLogin>
+</form>
     )
 }
 
