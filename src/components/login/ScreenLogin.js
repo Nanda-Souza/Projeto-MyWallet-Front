@@ -1,14 +1,16 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ThreeDots } from "react-loader-spinner";
+import TokenContext from "../../contexts/TokenContext";
 
 export default function ScreenLogin(){
     const [loading, setLoading] = useState(false)    
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")    
     const navigate = useNavigate()
+    const { setToken } = useContext(TokenContext)
 
 const sendLogin = async (e) => {
         e.preventDefault()
@@ -19,7 +21,8 @@ const sendLogin = async (e) => {
         try{    
     
         const logingPost = await axios.post("http://localhost:5001/sign-in", loginData)
-        console.log(logingPost)
+        setToken(logingPost.data)
+        console.log(logingPost.data)
         } catch (err){
             if (err.response?.status === 400){
                 alert("Email ou senha incorretos!")
@@ -30,7 +33,8 @@ const sendLogin = async (e) => {
             return;
         }    
         setLoading(false)        
-        navigate("/")
+        navigate("/home")
+        
         
         
     
