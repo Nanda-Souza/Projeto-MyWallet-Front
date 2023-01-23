@@ -1,6 +1,16 @@
 import styled from "styled-components"
+import { useNavigate } from "react-router-dom";
 
 export default function FotterHome(){
+    const navigate = useNavigate()
+
+    function newIncome(){        
+        navigate("/nova-entrada")
+    }
+
+    function newExpense(){        
+        navigate("/nova-saida")
+    }
     
 
     return (
@@ -8,7 +18,7 @@ export default function FotterHome(){
         <FooterHm>
 
             <div className="new-entry">
-                <button data-test="new-income">
+                <button data-test="new-income" onClick={newIncome}>
                     <img src="assets/iconPlus.png" alt=""/>
                     <p>Nova Entrada</p>
                 </button>
@@ -16,7 +26,7 @@ export default function FotterHome(){
        
 
             <div className="new-exit">
-                <button data-test="new-expense">
+                <button data-test="new-expense" onClick={newExpense}>
                     <img src="assets/iconLess.png" alt=""/>
                     <p>Nova Saída</p>
                 </button>
