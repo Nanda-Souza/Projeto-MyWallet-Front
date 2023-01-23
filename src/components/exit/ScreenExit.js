@@ -1,31 +1,86 @@
 import styled from "styled-components";
-
+import axios from "axios";
+import TokenContext from "../../contexts/TokenContext"
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function ScreenExit(){
+    const { config } = useContext(TokenContext)
+    const [loading, setLoading] = useState(false)
+    const [price, setPrice] = useState("")
+    const [description, setDescription] = useState("")
+    const navigate = useNavigate()
+
+    const sendExpense = async (e) => {
+        e.preventDefault()
+    
+        const URL = `${process.env.REACT_APP_API_URL}/expense`
+        setLoading(true)
+        const expenseData = {
+            value: parseFloat(price).toFixed(2),
+            description,
+            type: "expense"
+        }
+            
+    
+        try{
+            await axios.post(URL, expenseData, config)
+            
+            
+        } catch (err){
+            alert("Não foi possível fazer o cadastro, favor tentar novamente mais tarde!")
+            setLoading(false)
+        }
+        
+        setLoading(false)
+        navigate("/home")
+    
+    
+    
+    
+    }
 
     return (
 
+<form onSubmit={sendExpense}>
     <NewExit>
 
         <ExitList>
             <input
                  data-test="registry-amount-input"
-                 type="value"
-                 placeholder="Valor"               
+                 type="number"
+                 value={price}
+                 onChange={e => setPrice(e.target.value)}
+                 placeholder="Valor"
+                 required
+                 disabled={loading}               
                 />
 
             <input
                   data-test="registry-name-input"
-                 type="description" 
+                 type="description"
+                 value={description}
+                 onChange={e => setDescription(e.target.value)}  
                  placeholder="Descrição"
+                 required
+                 disabled={loading}
                 />
 
 
             <SaveExit >
+                {loading ? (
+                    <ThreeDots 
+                        height="40"
+                        width="40"
+                        color="#ffffff"
+                    />
+                ):(
                     <p
                     data-test="registry-save" 
                     id="button" 
                     className="button-save">Salvar saída</p>
+                )}
             
             </SaveExit>
 
@@ -33,6 +88,7 @@ export default function ScreenExit(){
         </ExitList>
 
     </NewExit>
+</form>
     )
 }
 
