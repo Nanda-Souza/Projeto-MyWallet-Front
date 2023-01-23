@@ -1,8 +1,39 @@
 import styled from "styled-components"
+import axios from "axios";
+import TokenContext from "../../contexts/TokenContext"
+import { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 
 export default function ScreenHome(){
+    const { config  } = useContext(TokenContext)
+    const [ userTrans, setuserTrans ] = useState([{}])
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const URL = `${process.env.REACT_APP_API_URL}/expenses`        
+        
+        const getUserTransaction = async () => {
+            const userTransaction = await axios.get(URL, config)
+            setuserTrans(userTransaction.data)     
+            
+        }
+
+        getUserTransaction().catch(console.error)        
+                    
+        }, []);
+
+        
+        if (JSON.stringify(userTrans) === '[{}]') {
+            return(
+                <NoTransactionsContainer>
+                    <div className="container">
+                        <h2>Não há registros de entrada ou saída</h2>
+                    </div>
+                </NoTransactionsContainer>
+            )
+          }
  
     return (
         <HomeContainer>
@@ -99,29 +130,51 @@ const HomeContainer = styled.div`
     .balance{
         font-weight: 700;
     }
-    
      `
-     //<h2>Não há registros de entrada ou saída</h2>
-
-     //div{
-        //display: flex;
-        //flex-direction: center;
-        //aligh-itens: center;
-        //justify-content: center;
-        //border-radius: 5px;
-        //margin-top:90px;
-        //margin-bottom:20px;
-        //margin-left:15px;
-        //margin-right: 15px;
-        //background-color: #FFFFFF;
-        //width:100%;
-      //}
-     //h2{
-        //width:180px;
-        //height: 46px;
-        //color: #868686;
-        //font-size: 20px;
-        //display: flex;
-        //margin: auto;
-        //padding: auto;
-        //text-align: center;
+     
+    const NoTransactionsContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    aligh-itens: center;
+    width: 100%;
+    min-height: 80vh;
+    background-color: #8C11BE;
+    .container{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        border-radius: 5px;
+        margin-top:90px;
+        margin-bottom:20px;
+        margin-left: 25px;
+        margin-right: 25px;
+        background-color: #FFFFFF;
+        width:100%;
+        line-height: 25px;
+        font-family: 'Raleway';
+        font-style: normal;
+        font-weight: 400;
+      }
+     div{
+        display: flex;
+        flex-direction: center;
+        aligh-itens: center;
+        justify-content: center;
+        border-radius: 5px;
+        margin-top:90px;
+        margin-bottom:20px;
+        margin-left:15px;
+        margin-right: 15px;
+        background-color: #FFFFFF;
+        width:100%;
+      }
+     h2{
+        width:180px;
+        height: 46px;
+        color: #868686;
+        font-size: 20px;
+        display: flex;
+        margin: auto;
+        padding: auto;
+        text-align: center;
+     }`

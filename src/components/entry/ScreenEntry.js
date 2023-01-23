@@ -18,7 +18,7 @@ const sendGain = async (e) => {
 
     const URL = `${process.env.REACT_APP_API_URL}/expense`
     setLoading(true)
-    const expenseData = {
+    const gainData = {
         value: parseFloat(price).toFixed(2),
         description,
         type: "gain"
@@ -26,7 +26,7 @@ const sendGain = async (e) => {
         
 
     try{
-        await axios.post(URL, expenseData, config)
+        await axios.post(URL, gainData, config)
         
         
     } catch (err){
