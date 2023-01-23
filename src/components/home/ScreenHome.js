@@ -19,11 +19,11 @@ export default function ScreenHome(){
                 </ul>
 
                 <ul className="value" data-test="registry-amount">
-                    <li><span className="red">39,90</span></li>
-                    <li><span className="red">542,54</span></li>
-                    <li><span className="red">67,60</span></li>
-                    <li><span className="green">500,00</span></li>
-                    <li><span className="green">3000,00</span></li>
+                    <li><span className="expense">39,90</span></li>
+                    <li><span className="expense">542,54</span></li>
+                    <li><span className="expense">67,60</span></li>
+                    <li><span className="gain">500,00</span></li>
+                    <li><span className="gain">3000,00</span></li>
                 </ul>
 
             </div>
@@ -31,7 +31,7 @@ export default function ScreenHome(){
           
             <div className="total-balance">
                 <p className="balance">SALDO</p>
-                <p className="total" data-test="total-amount"><span className="green">2849,96</span></p>
+                <p className="total" data-test="total-amount"><span className="gain">2849,96</span></p>
             </div>
 
         </div>
@@ -69,10 +69,10 @@ const HomeContainer = styled.div`
         color:#C6C6C6;
 
     }
-    .red{
+    .expense{
         color:#C70000;
     } 
-    .green{
+    .gain{
         color:#03AC00; 
     }       
     .list{

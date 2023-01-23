@@ -8,9 +8,9 @@ export default function Header(){
     const { config, setToken } = useContext(TokenContext)
     const [ name, setName ] = useState("")
     const navigate = useNavigate()
-
+    
     useEffect(() => {
-        const URL = "http://localhost:5001/name"
+        const URL = `${process.env.REACT_APP_API_URL}/name`
 
         const getUsername = async () => {
             const userName = await axios.get(URL, config)

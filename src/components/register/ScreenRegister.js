@@ -21,7 +21,7 @@ const sendRegister = async (e) => {
 
     try{    
 
-    await axios.post("http://localhost:5001/sign-up", loginData)
+    await axios.post(`${process.env.REACT_APP_API_URL}/sign-up`, loginData)
     
     } catch (err){
         if (err.response?.status === 422){

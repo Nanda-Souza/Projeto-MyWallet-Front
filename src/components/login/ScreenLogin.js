@@ -17,10 +17,11 @@ const sendLogin = async (e) => {
     
         const loginData = {email, password}
         setLoading(true)
+                
     
         try{    
     
-        const logingPost = await axios.post("http://localhost:5001/sign-in", loginData)
+        const logingPost = await axios.post(`${process.env.REACT_APP_API_URL}/sign-in`, loginData)
         setToken(logingPost.data)
         
         } catch (err){
