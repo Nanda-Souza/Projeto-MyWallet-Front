@@ -1,10 +1,27 @@
 import styled from "styled-components"
+import axios from "axios";
+import TokenContext from "../../contexts/TokenContext"
+import { useState, useContext, useEffect } from "react";
 
 export default function Header(){
+    const { config } = useContext(TokenContext)
+    const [ name, setName ] = useState("")
+
+    useEffect(() => {
+        const URL = "http://localhost:5001/name"
+
+        const getUsername = async () => {
+            const userName = await axios.get(URL, config)
+            setName(userName.data)
+            
+        }
+        
+        getUsername().catch(console.error)
+    }, [])
     
     return (
         <HeaderHm>
-            <p data-test="user-name" className= "textHeader">Olá, Fulano</p>
+            <p data-test="user-name" className= "textHeader">Olá, {name}</p>
             <button data-test="logout"><img src="assets/iconTop.png" alt=""/></button>
 
         </HeaderHm>

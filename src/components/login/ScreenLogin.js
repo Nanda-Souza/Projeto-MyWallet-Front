@@ -22,7 +22,7 @@ const sendLogin = async (e) => {
     
         const logingPost = await axios.post("http://localhost:5001/sign-in", loginData)
         setToken(logingPost.data)
-        console.log(logingPost.data)
+        
         } catch (err){
             if (err.response?.status === 400){
                 alert("Email ou senha incorretos!")
