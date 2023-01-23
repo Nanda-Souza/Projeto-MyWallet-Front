@@ -2,10 +2,12 @@ import styled from "styled-components"
 import axios from "axios";
 import TokenContext from "../../contexts/TokenContext"
 import { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Header(){
-    const { config } = useContext(TokenContext)
+    const { config, setToken } = useContext(TokenContext)
     const [ name, setName ] = useState("")
+    const navigate = useNavigate()
 
     useEffect(() => {
         const URL = "http://localhost:5001/name"
@@ -18,11 +20,17 @@ export default function Header(){
         
         getUsername().catch(console.error)
     }, [])
+
+    function logout(){
+        setToken("")
+        navigate("/")
+
+    }
     
     return (
         <HeaderHm>
             <p data-test="user-name" className= "textHeader">Olá, {name}</p>
-            <button data-test="logout"><img src="assets/iconTop.png" alt=""/></button>
+            <button data-test="logout" onClick={logout}><img src="assets/iconTop.png" alt=""/></button>
 
         </HeaderHm>
     )
